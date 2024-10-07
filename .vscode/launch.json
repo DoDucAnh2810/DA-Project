@@ -1,0 +1,16 @@
+{
+    "configurations": [
+    {
+        "type": "java",
+        "name": "Launch Java Program",
+        "request": "launch",
+        "mainClass": "",
+        "args": [
+            "--id", "1",
+            "--hosts", "example/hosts",
+            "--output", "example/output/1.output",
+            "example/configs/perfect-links.config"
+        ]
+    }
+    ]
+}

@@ -1,0 +1,38 @@
+package cs451;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class Main {
+    public static final AtomicBoolean running = new AtomicBoolean(true);
+    static App app;
+
+    private static void handleSignal() {
+        running.set(false);
+        app.pp2p.flp2p.socket.close();
+    }
+
+    private static void initSignalHandlers() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                handleSignal();
+            }
+        });
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Parser parser = new Parser(args);
+        parser.parse();
+        initSignalHandlers();
+        Host.initLookup(parser.hosts());
+        app = new App(Host.idLookup(parser.myId()).getPort(), parser.output());
+        Host receiver = Host.idLookup(parser.receiverId());
+
+        if (parser.myId() != parser.receiverId())
+            for (int i = 1; i <= parser.nbMes(); i++)
+                app.send(receiver, Integer.toString(i));
+
+        while (true)
+            Thread.sleep(60 * 60 * 1000);
+    }
+}

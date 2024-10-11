@@ -1,15 +1,18 @@
-package cs451;
+package cs451.p2pLink;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
+import cs451.Constants;
+import cs451.Host;
+
 public class PerfectLink implements MessageListener {
-    FairLossLink flp2p;
+    public FairLossLink flp2p;
     MessageListener app;
     HashSet<String> delivered;
     HashMap<Integer, HashSet<String>> received; 
 
-    PerfectLink(MessageListener app, int port) {
+    public PerfectLink(MessageListener app, int port) {
         this.flp2p = new FairLossLink(this, port);
         this.app = app;
         this.delivered = new HashSet<String>();

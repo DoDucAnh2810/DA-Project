@@ -1,4 +1,6 @@
-package cs451;
+package cs451.p2pLink;
+
+import cs451.Host;
 
 /**
  * MessageListener

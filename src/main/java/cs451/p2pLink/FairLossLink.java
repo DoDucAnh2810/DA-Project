@@ -1,4 +1,4 @@
-package cs451;
+package cs451.p2pLink;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -6,9 +6,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import cs451.Host;
+import cs451.Main;
+
 public class FairLossLink implements MessageListener {
     MessageListener app;
-    DatagramSocket socket;
+    public DatagramSocket socket;
 
     FairLossLink(MessageListener app, int port){
         this.app = app;

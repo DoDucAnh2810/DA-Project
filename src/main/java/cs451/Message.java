@@ -6,13 +6,13 @@ public class Message {
     byte[] content;
     String hash;
     
-    Message(short srcId, long seqNum, byte[] content) {
+    public Message(short srcId, long seqNum, byte[] content) {
         this.srcId = srcId;
         this.seqNum = seqNum;
         this.content = content;
     }
 
-    byte[] getBytes() {
+    public byte[] getBytes() {
         short srcIdCopy = srcId;
         long seqNumCopy = seqNum;
         byte[] buffer = new byte[32];

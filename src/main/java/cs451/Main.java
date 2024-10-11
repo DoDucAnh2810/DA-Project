@@ -2,6 +2,8 @@ package cs451;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import cs451.format.Parser;
+
 public class Main {
     public static final AtomicBoolean running = new AtomicBoolean(true);
     static App app;

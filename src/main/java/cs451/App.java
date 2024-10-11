@@ -2,6 +2,10 @@ package cs451;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+
+import cs451.p2pLink.MessageListener;
+import cs451.p2pLink.PerfectLink;
+
 import java.io.IOException;
 
 public class App implements MessageListener {

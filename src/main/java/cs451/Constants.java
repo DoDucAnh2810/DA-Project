@@ -21,4 +21,10 @@ public class Constants {
     // code for message
     public static final byte MES = 0;
     public static final byte ACK = 1;
+
+    // size of various things
+    public static final int BYTE_OF_CONTENT = 22;
+    public static final int BYTE_PER_MES = 32;
+    public static final int MES_PER_PAC = 8;
+    public static final int BYTE_PER_PAC = 32*8;
 }

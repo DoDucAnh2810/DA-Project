@@ -8,6 +8,7 @@ import java.net.SocketException;
 
 import cs451.Host;
 import cs451.Main;
+import cs451.communicator.MessageListener;
 
 public class FairLossLink implements MessageListener {
     MessageListener app;

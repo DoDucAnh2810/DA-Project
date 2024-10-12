@@ -19,8 +19,8 @@ public class Constants {
     public static final int CONFIG_VALUE = 6;
 
     // code for message
-    public static final byte MES = 0;
-    public static final byte ACK = 1;
+    public static final char MES = 'M';
+    public static final char ACK = 'A';
 
     // size of various things
     public static final int BYTE_OF_CONTENT = 22;

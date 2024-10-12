@@ -1,4 +1,4 @@
-package cs451.p2pLink;
+package cs451.communicator;
 
 import cs451.Host;
 

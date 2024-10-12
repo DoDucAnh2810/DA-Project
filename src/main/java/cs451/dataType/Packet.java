@@ -1,10 +1,9 @@
-package cs451.p2pLink;
+package cs451.dataType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cs451.Constants;
-import cs451.Message;
 
 public class Packet {
     boolean isAck;

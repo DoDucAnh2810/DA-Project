@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 import cs451.communicator.MessageListener;
+import cs451.dataType.Message;
 import cs451.p2pLink.PerfectLink;
 
 import java.io.IOException;
@@ -12,8 +13,8 @@ public class App implements MessageListener {
     PerfectLink pp2p;
     PrintWriter writer;
 
-    App(int port, String output) {
-        pp2p = new PerfectLink(this, port);
+    App(int myId, String output) {
+        pp2p = new PerfectLink(this, myId);
         try {
             writer = new PrintWriter(new FileWriter(output));
         } catch (IOException e) {
@@ -24,15 +25,15 @@ public class App implements MessageListener {
     }
 
     @Override
-    public void send(Host dest, String message) {
+    public void send(Host dest, Message message) {
         pp2p.send(dest, message);
-        writer.println("b " + message);
+        writer.println("b " + message.sequenceNum());
         writer.flush();
     }
 
     @Override
-    public void deliver(Host src, String message) {
-        writer.println("d " + src.getId() + " " + message);
+    public void deliver(Host src, Message message) {
+        writer.println("d " + message.processId() + " " + message.sequenceNum());
         writer.flush();
     }
 

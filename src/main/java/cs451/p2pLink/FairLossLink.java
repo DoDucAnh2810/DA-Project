@@ -9,15 +9,16 @@ import java.net.SocketException;
 import cs451.Host;
 import cs451.Main;
 import cs451.communicator.MessageListener;
+import cs451.dataType.Message;
 
 public class FairLossLink implements MessageListener {
     MessageListener app;
     DatagramSocket socket;
 
-    FairLossLink(MessageListener app, int port){
+    FairLossLink(MessageListener app, int myId){
         this.app = app;
         try {
-            this.socket = new DatagramSocket(port);
+            this.socket = new DatagramSocket(Host.idLookup(myId).getPort());
         } catch (SocketException e) {
             System.err.println("FairLossLink: Unable to create socket");
             e.printStackTrace();
@@ -27,7 +28,7 @@ public class FairLossLink implements MessageListener {
         UDPreceiver.start();
     }
 
-    public void UDPsend(String message, String ip, int port) {
+    public void UDPsend(Message message, String ip, int port) {
         byte[] buffer = message.getBytes();
         try {
             InetAddress address = InetAddress.getByName(ip);
@@ -48,13 +49,14 @@ public class FairLossLink implements MessageListener {
             while (Main.running.get()) {
                 try {socket.receive(packet);}
                 catch (SocketException e) {System.exit(1);}
-                String message = new String(packet.getData(), 0, packet.getLength());
 
                 InetAddress srcAddress = packet.getAddress(); 
                 int srcPort = packet.getPort();        
                 String srcHash = srcAddress.toString() + srcPort;
                 Host src = Host.hashLookup(srcHash);
 
+                Message message = new Message(packet.getData());
+                
                 deliver(src, message);
             }
         } catch (IOException e) {
@@ -64,13 +66,13 @@ public class FairLossLink implements MessageListener {
     }
 
     @Override
-    public void send(Host dest, String message) {
+    public void send(Host dest, Message message) {
         UDPsend(message, dest.getIp(), dest.getPort());
     }
 
     @Override
-    public void deliver(Host src, String packet) {
-        app.deliver(src, packet);
+    public void deliver(Host src, Message message) {
+        app.deliver(src, message);
     }
 
     public void closeSocket() {

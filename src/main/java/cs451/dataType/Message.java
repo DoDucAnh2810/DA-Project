@@ -3,20 +3,19 @@ package cs451.dataType;
 import cs451.Constants;
 
 public class Message {
-    short processId;
+    int processId;
     long sequenceNum;
     byte[] content;
     
-    public Message(short processId, long sequenceNum, byte[] content) {
+    public Message(int processId, long sequenceNum, byte[] content) {
         this.processId = processId;
         this.sequenceNum = sequenceNum;
         this.content = content;
     }
 
     public Message(byte[] serialization) {
-        processId = (short)((serialization[1] << 8) | serialization[0]);
-        
-        sequenceNum = 0;
+        processId = (serialization[1] << 8) | serialization[0];
+
         for (int i = 9; i >= 2; i--)
             sequenceNum = (sequenceNum << 8) | serialization[i];
 
@@ -27,8 +26,20 @@ public class Message {
             content[m++] = serialization[n++];
     }
 
+    public int processId() {
+        return processId;
+    }
+
+    public long sequenceNum() {
+        return sequenceNum;
+    }
+
+    public byte[] content() {
+        return content;
+    }
+
     public byte[] getBytes() {
-        short processIdCopy = processId;
+        int processIdCopy = processId;
         long sequenceNumCopy = sequenceNum;
         byte[] buffer = new byte[32];
 

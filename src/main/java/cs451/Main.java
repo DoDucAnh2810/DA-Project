@@ -2,6 +2,7 @@ package cs451;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import cs451.dataType.Message;
 import cs451.format.Parser;
 
 public class Main {
@@ -27,12 +28,12 @@ public class Main {
         parser.parse();
         initSignalHandlers();
         Host.initLookup(parser.hosts());
-        app = new App(Host.idLookup(parser.myId()).getPort(), parser.output());
+        app = new App(parser.myId(), parser.output());
         Host receiver = Host.idLookup(parser.receiverId());
 
         if (parser.myId() != parser.receiverId())
             for (int i = 1; i <= parser.nbMes(); i++)
-                app.send(receiver, Integer.toString(i));
+                app.send(receiver, new Message(parser.myId(), i, null));
 
         while (true)
             Thread.sleep(60 * 60 * 1000);

@@ -8,7 +8,7 @@ import cs451.Host;
 import cs451.communicator.MessageListener;
 
 public class PerfectLink implements MessageListener {
-    public FairLossLink flp2p;
+    FairLossLink flp2p;
     MessageListener app;
     HashSet<String> delivered;
     HashMap<Integer, HashSet<String>> received; 
@@ -50,5 +50,9 @@ public class PerfectLink implements MessageListener {
             default:
                 System.err.println("PerfectLink: Invalid message type specified");  
         }
+    }
+
+    public void closeSocket() {
+        flp2p.closeSocket();
     }
 }

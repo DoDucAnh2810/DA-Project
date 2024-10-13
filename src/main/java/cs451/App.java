@@ -35,4 +35,8 @@ public class App implements MessageListener {
         writer.println("d " + src.getId() + " " + message);
         writer.flush();
     }
+
+    public void closeSocket() {
+        pp2p.closeSocket();
+    }
 }

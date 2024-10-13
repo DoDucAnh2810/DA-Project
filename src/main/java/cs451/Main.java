@@ -10,7 +10,7 @@ public class Main {
 
     private static void handleSignal() {
         running.set(false);
-        app.pp2p.flp2p.socket.close();
+        app.closeSocket();
     }
 
     private static void initSignalHandlers() {

@@ -12,7 +12,7 @@ import cs451.communicator.MessageListener;
 
 public class FairLossLink implements MessageListener {
     MessageListener app;
-    public DatagramSocket socket;
+    DatagramSocket socket;
 
     FairLossLink(MessageListener app, int port){
         this.app = app;
@@ -71,5 +71,9 @@ public class FairLossLink implements MessageListener {
     @Override
     public void deliver(Host src, String packet) {
         app.deliver(src, packet);
+    }
+
+    public void closeSocket() {
+        socket.close();
     }
 }

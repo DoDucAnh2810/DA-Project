@@ -2,7 +2,6 @@ package cs451;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cs451.dataType.Message;
 import cs451.format.Parser;
 
 public class Main {

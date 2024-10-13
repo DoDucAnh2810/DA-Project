@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import cs451.Host;
-import cs451.communicator.MessageListener;
-import cs451.dataType.Message;
+import cs451.Message;
+import cs451.MessageListener;
 
 public class PerfectLink implements MessageListener {
     int myId;

@@ -1,4 +1,4 @@
-package cs451.dataType;
+package cs451;
 
 public class Message {
     int processId, sequenceNum, length;

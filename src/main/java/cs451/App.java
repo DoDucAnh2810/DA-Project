@@ -3,8 +3,6 @@ package cs451;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import cs451.communicator.MessageListener;
-import cs451.dataType.Message;
 import cs451.p2pLink.PerfectLink;
 
 import java.io.IOException;

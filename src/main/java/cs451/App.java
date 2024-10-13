@@ -3,6 +3,7 @@ package cs451;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+import cs451.communicator.MessageListener;
 import cs451.p2pLink.GroupedLink;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class App implements MessageListener {
         writer.flush();
     }
 
+    @Override
     public void closeSocket() {
         gp2p.closeSocket();
     }

@@ -1,4 +1,7 @@
-package cs451;
+package cs451.communicator;
+
+import cs451.Host;
+import cs451.Message;
 
 /**
  * MessageListener
@@ -6,4 +9,5 @@ package cs451;
 public interface MessageListener {
     void send(Host dest, Message message);
     void deliver(Host src, Message message);
+    void closeSocket();
 }

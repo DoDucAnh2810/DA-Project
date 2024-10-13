@@ -9,8 +9,8 @@ import java.util.List;
 
 import cs451.Host;
 import cs451.Message;
-import cs451.MessageListener;
 import cs451.Timer;
+import cs451.communicator.MessageListener;
 
 public class GroupedLink implements MessageListener {
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -67,6 +67,7 @@ public class GroupedLink implements MessageListener {
             app.deliver(src, m);
     }
 
+    @Override
     public void closeSocket() {
         pp2p.closeSocket();
     }

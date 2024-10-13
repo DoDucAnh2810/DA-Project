@@ -9,7 +9,7 @@ import java.net.SocketException;
 import cs451.Host;
 import cs451.Main;
 import cs451.Message;
-import cs451.MessageListener;
+import cs451.communicator.MessageListener;
 
 public class FairLossLink implements MessageListener {
     MessageListener app;
@@ -75,6 +75,7 @@ public class FairLossLink implements MessageListener {
         app.deliver(src, message);
     }
 
+    @Override
     public void closeSocket() {
         socket.close();
     }

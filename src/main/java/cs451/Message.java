@@ -18,12 +18,15 @@ public class Message {
     }
 
     public Message(byte[] serialization) {
+        processId = 0;
+        sequenceNum = 0;
+        length = 0;
         for (int i = 3; i >= 0; i--)
-            processId = (processId << 8) | serialization[i];
+            processId = (processId << 8) | (serialization[i] & 0xFF);
         for (int i = 7; i >= 4; i--)
-            sequenceNum = (sequenceNum << 8) | serialization[i];
+            sequenceNum = (sequenceNum << 8) | (serialization[i] & 0xFF);
         for (int i = 11; i >= 8; i--)
-            length = (length << 8) | serialization[i];
+            length = (length << 8) | (serialization[i] & 0xFF);
 
         content = new byte[length];
         int i = 0, j = 12;
@@ -112,11 +115,11 @@ public class Message {
             int processId = 0, sequenceNum = 0, length = 0;
 
             for (int i = start+3; i >= start; i--)
-                processId = (processId << 8) | serialization[i];
+                processId = (processId << 8) | (serialization[i] & 0xFF);
             for (int i = start+7; i >= start+4; i--)
-                sequenceNum = (sequenceNum << 8) | serialization[i];
+                sequenceNum = (sequenceNum << 8) | (serialization[i] & 0xFF);
             for (int i = start+11; i >= start+8; i--)
-                length = (length << 8) | serialization[i];
+                length = (length << 8) | (serialization[i] & 0xFF);
 
             byte[] content = new byte[length];
             int i = 0, j = start+12;

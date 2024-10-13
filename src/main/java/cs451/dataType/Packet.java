@@ -38,7 +38,7 @@ public class Packet {
             if (srcId == 0)
                 break;
 
-            long seqNum = 0;
+            int seqNum = 0;
             for (int j = start+9; j >= start+2; j--)
                 seqNum = (seqNum << 8) | data[i];
 

@@ -1,21 +1,24 @@
 package cs451.p2pLink;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import cs451.Host;
-import cs451.Main;
 import cs451.Message;
 import cs451.MessageListener;
 import cs451.Timer;
 
 public class GroupedLink implements MessageListener {
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     PerfectLink pp2p;
     MessageListener app;
     int myId, groupNum;
-    HashMap<Integer, List<Message>> waiting;
-    HashMap<Integer, Timer> lastModTime;
+    ConcurrentHashMap<Integer, List<Message>> waiting;
+    ConcurrentHashMap<Integer, Timer> lastModTime;
 
 
     public GroupedLink(MessageListener app, int myId) {
@@ -23,26 +26,21 @@ public class GroupedLink implements MessageListener {
         this.app = app;
         this.myId = myId;
         this.groupNum = -1;
-        this.waiting = new HashMap<>();
+        this.waiting = new ConcurrentHashMap<>();
         for (int id : Host.idSet())
             this.waiting.put(id, new ArrayList<>());
-        this.lastModTime = new HashMap<>();
+        this.lastModTime = new ConcurrentHashMap<>();
         for (int id : Host.idSet())
             this.lastModTime.put(id, new Timer());
 
-        Thread periodicSend = new Thread(() -> {
-            while (Main.running.get()) {
-                for (Integer destId : waiting.keySet())
-                    if (lastModTime.get(destId).getElapsedTimeMillis() > 100)
-                        sendGroup(destId);
+        executor.scheduleAtFixedRate(() -> {
+            for (Integer destId : waiting.keySet()) {
+                if (!waiting.get(destId).isEmpty() &&
+                    lastModTime.get(destId).getElapsedTimeMillis() > 1000) {
+                    sendGroup(destId);
+                }
             }
-            try {
-                Thread.sleep(100); // Sleep to prevent high CPU usage
-            } catch (InterruptedException e) {
-                System.exit(1);
-            }
-        });
-        periodicSend.start();
+        }, 1, 1, TimeUnit.SECONDS);
     }
 
     public synchronized void sendGroup(int destId) {
@@ -56,7 +54,7 @@ public class GroupedLink implements MessageListener {
     }
 
     @Override
-    public void send(Host dest, Message message) {
+    public synchronized void send(Host dest, Message message) {
         int destId = dest.getId();
         waiting.get(destId).add(message);
         if (waiting.get(destId).size() == 8)

@@ -3,16 +3,16 @@ package cs451;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import cs451.p2pLink.PerfectLink;
+import cs451.p2pLink.GroupedLink;
 
 import java.io.IOException;
 
 public class App implements MessageListener {
-    PerfectLink pp2p;
+    GroupedLink gp2p;
     PrintWriter writer;
 
     App(int myId, String output) {
-        pp2p = new PerfectLink(this, myId);
+        gp2p = new GroupedLink(this, myId);
         try {
             writer = new PrintWriter(new FileWriter(output));
         } catch (IOException e) {
@@ -24,7 +24,7 @@ public class App implements MessageListener {
 
     @Override
     public void send(Host dest, Message message) {
-        pp2p.send(dest, message);
+        gp2p.send(dest, message);
         writer.println("b " + message.sequenceNum());
         writer.flush();
     }
@@ -36,6 +36,6 @@ public class App implements MessageListener {
     }
 
     public void closeSocket() {
-        pp2p.closeSocket();
+        gp2p.closeSocket();
     }
 }

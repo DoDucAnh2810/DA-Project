@@ -6,9 +6,9 @@
         "request": "launch",
         "mainClass": "",
         "args": [
-            "--id", "1",
+            "--id", "3",
             "--hosts", "example/hosts",
-            "--output", "example/output/1.output",
+            "--output", "example/output/3.output",
             "example/configs/perfect-links.config"
         ]
     }

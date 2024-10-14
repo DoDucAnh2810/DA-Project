@@ -9,8 +9,8 @@ import cs451.p2pLink.GroupedLink;
 import java.io.IOException;
 
 public class App implements MessageListener {
-    GroupedLink gp2p;
-    PrintWriter writer;
+    private GroupedLink gp2p;
+    private PrintWriter writer;
 
     App(int myId, String output) {
         gp2p = new GroupedLink(this, myId);

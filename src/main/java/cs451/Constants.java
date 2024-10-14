@@ -17,14 +17,4 @@ public class Constants {
 
     // indexes for config
     public static final int CONFIG_VALUE = 6;
-
-    // code for message
-    public static final char MES = 'M';
-    public static final char ACK = 'A';
-
-    // size of various things
-    public static final int BYTE_OF_CONTENT = 22;
-    public static final int BYTE_PER_MES = 32;
-    public static final int MES_PER_PAC = 8;
-    public static final int BYTE_PER_PAC = 32*8;
 }

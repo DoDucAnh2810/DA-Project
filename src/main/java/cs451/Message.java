@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Message {
-    int processId, sequenceNum, length;
-    byte[] content;
+    private int processId, sequenceNum, length;
+    private byte[] content;
     
     public Message(int processId, int sequenceNum, byte[] content) {
         this.processId = processId;

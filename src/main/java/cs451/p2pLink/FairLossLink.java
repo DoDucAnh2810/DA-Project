@@ -12,10 +12,10 @@ import cs451.Message;
 import cs451.communicator.MessageListener;
 
 public class FairLossLink implements MessageListener {
-    MessageListener app;
-    DatagramSocket socket;
+    private MessageListener app;
+    private DatagramSocket socket;
 
-    FairLossLink(MessageListener app, int myId){
+    public FairLossLink(MessageListener app, int myId){
         this.app = app;
         try {
             this.socket = new DatagramSocket(Host.idLookup(myId).getPort());
@@ -28,7 +28,7 @@ public class FairLossLink implements MessageListener {
         UDPreceiver.start();
     }
 
-    public void UDPsend(Message message, String ip, int port) {
+    private void UDPsend(Message message, String ip, int port) {
         byte[] buffer = message.getBytes();
         try {
             InetAddress address = InetAddress.getByName(ip);
@@ -41,7 +41,7 @@ public class FairLossLink implements MessageListener {
         }
     }
 
-    public void UDPreceive() {
+    private void UDPreceive() {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 

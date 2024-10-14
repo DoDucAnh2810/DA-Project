@@ -9,16 +9,15 @@ import java.util.List;
 
 import cs451.Host;
 import cs451.Message;
-import cs451.Timer;
 import cs451.communicator.MessageListener;
 
 public class GroupedLink implements MessageListener {
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    PerfectLink pp2p;
-    MessageListener app;
-    int myId, groupNum;
-    ConcurrentHashMap<Integer, List<Message>> waiting;
-    ConcurrentHashMap<Integer, Timer> lastModTime;
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    private PerfectLink pp2p;
+    private MessageListener app;
+    private int myId, groupNum;
+    private ConcurrentHashMap<Integer, List<Message>> waiting;
+    private ConcurrentHashMap<Integer, Timer> lastModTime;
 
 
     public GroupedLink(MessageListener app, int myId) {

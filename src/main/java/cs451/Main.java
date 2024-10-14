@@ -6,7 +6,7 @@ import cs451.format.Parser;
 
 public class Main {
     public static final AtomicBoolean running = new AtomicBoolean(true);
-    static App app;
+    private static App app;
 
     private static void handleSignal() {
         running.set(false);

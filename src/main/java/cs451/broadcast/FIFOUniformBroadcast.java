@@ -4,7 +4,6 @@ import cs451.Host;
 import cs451.Message;
 import cs451.communicator.Deliverable;
 import cs451.communicator.MessageBroadcaster;
-import cs451.communicator.MessageListener;
 
 /**
  * FIFOUniformBroadcast
@@ -22,12 +21,13 @@ public class FIFOUniformBroadcast extends MessageBroadcaster {
 
     @Override
     public void deliver(Host src, Message message) {
+        app.deliver(src, message);
         throw new UnsupportedOperationException("Unimplemented method 'deliver'");
     }
 
 
     @Override
     public void closeConnection() {
-        throw new UnsupportedOperationException("Unimplemented method 'closeConnection'");
+        urb.closeConnection();
     }
 }

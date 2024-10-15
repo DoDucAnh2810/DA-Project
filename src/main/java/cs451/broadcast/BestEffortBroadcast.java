@@ -4,7 +4,6 @@ import cs451.Host;
 import cs451.Message;
 import cs451.communicator.Deliverable;
 import cs451.communicator.MessageBroadcaster;
-import cs451.communicator.MessageListener;
 import cs451.p2pLink.GroupedLink;
 
 /**
@@ -23,12 +22,13 @@ public class BestEffortBroadcast extends MessageBroadcaster {
 
     @Override
     public void deliver(Host src, Message message) {
+        app.deliver(src, message);
         throw new UnsupportedOperationException("Unimplemented method 'deliver'");
     }
 
 
     @Override
     public void closeConnection() {
-        throw new UnsupportedOperationException("Unimplemented method 'closeConnection'");
+        gp2p.closeConnection();
     }
 }

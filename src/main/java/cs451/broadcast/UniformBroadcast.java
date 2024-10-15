@@ -20,12 +20,13 @@ public class UniformBroadcast extends MessageBroadcaster {
 
     @Override
     public void deliver(Host src, Message message) {
+        app.deliver(src, message);
         throw new UnsupportedOperationException("Unimplemented method 'deliver'");
     }
 
 
     @Override
     public void closeConnection() {
-        throw new UnsupportedOperationException("Unimplemented method 'closeConnection'");
+        beb.closeConnection();
     }
 }

@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import cs451.Host;
 import cs451.Message;
-import cs451.communicator.MessageListener;
+import cs451.MessageListener;
 
 public class PerfectLink implements MessageListener {
     int myId;
@@ -25,9 +25,9 @@ public class PerfectLink implements MessageListener {
     }
 
     @Override
-    public void send(Host dest, Message message) {
+    public void broadcast(Host dest, Message message) {
         while (!received.get(dest.getId()).contains(message.toString()))
-            flp2p.send(dest, message);
+            flp2p.broadcast(dest, message);
     }
 
     @Override   
@@ -38,7 +38,7 @@ public class PerfectLink implements MessageListener {
                 app.deliver(src, message);
                 delivered.add(hash);
             }
-            flp2p.send(src, message);
+            flp2p.broadcast(src, message);
         } else
             received.get(src.getId()).add(hash);
     }

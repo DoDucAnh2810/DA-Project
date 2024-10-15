@@ -9,7 +9,7 @@ import java.net.SocketException;
 import cs451.Host;
 import cs451.Main;
 import cs451.Message;
-import cs451.communicator.MessageListener;
+import cs451.MessageListener;
 
 public class FairLossLink implements MessageListener {
     private MessageListener app;
@@ -66,7 +66,7 @@ public class FairLossLink implements MessageListener {
     }
 
     @Override
-    public void send(Host dest, Message message) {
+    public void broadcast(Host dest, Message message) {
         UDPsend(message, dest.getIp(), dest.getPort());
     }
 

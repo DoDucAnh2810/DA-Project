@@ -3,7 +3,6 @@ package cs451;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import cs451.communicator.MessageListener;
 import cs451.p2pLink.GroupedLink;
 
 import java.io.IOException;
@@ -24,8 +23,8 @@ public class App implements MessageListener {
     }
 
     @Override
-    public void send(Host dest, Message message) {
-        gp2p.send(dest, message);
+    public void broadcast(Host dest, Message message) {
+        gp2p.broadcast(dest, message);
         writer.println("b " + message.sequenceNum());
         writer.flush();
     }

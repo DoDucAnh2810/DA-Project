@@ -2,7 +2,6 @@ package cs451.format;
 
 import java.util.List;
 
-import cs451.Constants;
 import cs451.Host;
 
 public class Parser {

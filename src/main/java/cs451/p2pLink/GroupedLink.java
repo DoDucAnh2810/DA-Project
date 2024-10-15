@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs451.Host;
-import cs451.Message;
-import cs451.communicator.Deliverable;
-import cs451.communicator.MessageListener;
+import cs451.communication.Deliverable;
+import cs451.communication.Message;
+import cs451.communication.MessageListener;
 
 public class GroupedLink extends MessageListener {
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);

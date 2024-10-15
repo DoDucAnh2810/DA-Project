@@ -1,7 +1,6 @@
-package cs451.communicator;
+package cs451.communication;
 
 import cs451.Host;
-import cs451.Message;
 
 /**
  * MessageListener

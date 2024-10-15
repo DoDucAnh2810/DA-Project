@@ -4,7 +4,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
-import cs451.communicator.MessageListener;
+import cs451.communication.Message;
+import cs451.communication.MessageListener;
 import cs451.p2pLink.GroupedLink;
 
 public class App extends MessageListener {

@@ -1,5 +1,6 @@
 package cs451;
 
+import cs451.communication.Message;
 import cs451.format.Parser;
 
 /**

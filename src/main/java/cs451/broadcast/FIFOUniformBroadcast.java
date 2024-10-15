@@ -1,9 +1,9 @@
 package cs451.broadcast;
 
 import cs451.Host;
-import cs451.Message;
-import cs451.communicator.Deliverable;
-import cs451.communicator.MessageBroadcaster;
+import cs451.communication.Deliverable;
+import cs451.communication.Message;
+import cs451.communication.MessageBroadcaster;
 
 /**
  * FIFOUniformBroadcast

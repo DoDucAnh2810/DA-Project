@@ -25,19 +25,20 @@ public class UniformBroadcast extends MessageBroadcaster {
         this.ack = new HashMap<String, Integer>();
     }
 
+
     private void acknowledge(Host src, Message message) {
         String hash = message.toString();
         Integer value = ack.get(hash); 
         if (value == null)
-            ack.put(hash, 1);
-        else
-            ack.put(hash, ++value);
+            value = 0;
+        ack.put(hash, ++value);
         if (value > Host.count()/2) {
             ack.remove(hash);
             app.deliver(src, message);
         }
     }
 
+    
     @Override
     public void broadcast(Message message) {
         for (Host host : Host.hostList())

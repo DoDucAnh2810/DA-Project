@@ -9,12 +9,13 @@ import java.util.List;
 
 import cs451.Host;
 import cs451.Message;
-import cs451.MessageListener;
+import cs451.communicator.Deliverable;
+import cs451.communicator.MessageListener;
 
-public class GroupedLink implements MessageListener {
+public class GroupedLink extends MessageListener {
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private PerfectLink pp2p;
-    private MessageListener app;
+    private Deliverable app;
     private int myId, groupNum;
     private ConcurrentHashMap<Integer, List<Message>> waiting;
     private ConcurrentHashMap<Integer, Timer> lastModTime;
@@ -46,7 +47,7 @@ public class GroupedLink implements MessageListener {
     public synchronized void sendGroup(int destId) {
         if (waiting.get(destId).isEmpty())
             return;
-        pp2p.broadcast(Host.idLookup(destId), 
+        pp2p.send(Host.idLookup(destId), 
                        new Message(myId, groupNum--, 
                                    groupSerialization(waiting.get(destId))));
         waiting.get(destId).clear();
@@ -55,7 +56,7 @@ public class GroupedLink implements MessageListener {
 
 
     @Override
-    public synchronized void broadcast(Host dest, Message message) {
+    public synchronized void send(Host dest, Message message) {
         int destId = dest.getId();
         waiting.get(destId).add(message);
         if (waiting.get(destId).size() == 8)

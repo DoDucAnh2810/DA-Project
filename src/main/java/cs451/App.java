@@ -4,9 +4,10 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
+import cs451.communicator.MessageListener;
 import cs451.p2pLink.GroupedLink;
 
-public class App implements MessageListener {
+public class App extends MessageListener {
     private GroupedLink gp2p;
     private PrintWriter writer;
 
@@ -24,8 +25,8 @@ public class App implements MessageListener {
 
 
     @Override
-    public void broadcast(Host dest, Message message) {
-        gp2p.broadcast(dest, message);
+    public void send(Host dest, Message message) {
+        gp2p.send(dest, message);
         writer.println("b " + message.sequenceNum());
         writer.flush();
     }

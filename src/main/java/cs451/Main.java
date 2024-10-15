@@ -34,7 +34,7 @@ public class Main {
 
         if (parser.myId() != parser.receiverId())
             for (int i = 1; i <= parser.nbMes(); i++)
-                app.broadcast(receiver, new Message(parser.myId(), i, null));
+                app.send(receiver, new Message(parser.myId(), i, null));
 
         while (true)
             Thread.sleep(60 * 60 * 1000);

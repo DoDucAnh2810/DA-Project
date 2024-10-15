@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Host {
     private static final String IP_START_REGEX = "/";
+    private static List<Host> hosts;
     private static HashMap<String, Host> hashToHost = new HashMap<String, Host>();
     private static HashMap<Integer, Host> idToHost = new HashMap<Integer, Host>();
     private int id;
@@ -69,13 +70,17 @@ public class Host {
     }
 
 
-    public static void initLookup(List<Host> hosts) {
-        for (Host host : hosts) {
+    public static void init(List<Host> hostList) {
+        hosts = hostList;
+        for (Host host : hostList) {
             hashToHost.put(host.getHash(), host);
             idToHost.put(host.getId(), host);
         }
     }
 
+    public static List<Host> hostList() {
+        return hosts;
+    }
 
     public static Host hashLookup(String hash) {
         return hashToHost.get(hash);

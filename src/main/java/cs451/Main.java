@@ -29,7 +29,7 @@ public class Main {
         Parser parser = new Parser(args);
         parser.parse();
         initSignalHandlers();
-        Host.initLookup(parser.hosts());
+        Host.init(parser.hosts());
         app = new App(parser.myId(), parser.output());
         Host receiver = Host.idLookup(parser.receiverId());
 

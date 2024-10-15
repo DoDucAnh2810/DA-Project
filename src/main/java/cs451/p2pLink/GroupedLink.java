@@ -21,7 +21,7 @@ public class GroupedLink extends MessageListener {
     private ConcurrentHashMap<Integer, Timer> lastModTime;
 
 
-    public GroupedLink(MessageListener app, int myId) {
+    public GroupedLink(Deliverable app, int myId) {
         this.pp2p = new PerfectLink(this, myId);
         this.app = app;
         this.myId = myId;

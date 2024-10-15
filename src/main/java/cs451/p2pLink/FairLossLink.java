@@ -18,7 +18,7 @@ public class FairLossLink extends MessageListener {
     private DatagramSocket socket;
 
 
-    public FairLossLink(MessageListener app, int myId){
+    public FairLossLink(Deliverable app, int myId){
         this.app = app;
         try {
             this.socket = new DatagramSocket(Host.idLookup(myId).getPort());

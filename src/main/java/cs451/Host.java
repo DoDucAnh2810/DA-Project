@@ -11,6 +11,7 @@ public class Host {
     private static List<Host> hosts;
     private static HashMap<String, Host> hashToHost = new HashMap<String, Host>();
     private static HashMap<Integer, Host> idToHost = new HashMap<Integer, Host>();
+    private static int count;
     private int id;
     private String ip;
     private int port = -1;
@@ -71,6 +72,7 @@ public class Host {
 
 
     public static void init(List<Host> hostList) {
+        count = hostList.size();
         hosts = hostList;
         for (Host host : hostList) {
             hashToHost.put(host.getHash(), host);
@@ -78,10 +80,17 @@ public class Host {
         }
     }
 
+
+    public static int count() {
+        return count;
+    }
+
+
     public static List<Host> hostList() {
         return hosts;
     }
 
+    
     public static Host hashLookup(String hash) {
         return hashToHost.get(hash);
     }

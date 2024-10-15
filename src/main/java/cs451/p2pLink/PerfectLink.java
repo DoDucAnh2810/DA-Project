@@ -16,7 +16,7 @@ public class PerfectLink extends MessageListener {
     HashMap<Integer, HashSet<String>> received; 
 
 
-    public PerfectLink(MessageListener app, int myId) {
+    public PerfectLink(Deliverable app, int myId) {
         this.myId = myId;
         this.flp2p = new FairLossLink(this, myId);
         this.app = app;

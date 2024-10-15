@@ -14,6 +14,7 @@ public class PerfectLink implements MessageListener {
     HashSet<String> delivered;
     HashMap<Integer, HashSet<String>> received; 
 
+
     public PerfectLink(MessageListener app, int myId) {
         this.myId = myId;
         this.flp2p = new FairLossLink(this, myId);
@@ -24,11 +25,13 @@ public class PerfectLink implements MessageListener {
             this.received.put(id, new HashSet<String>());
     }
 
+
     @Override
     public void broadcast(Host dest, Message message) {
         while (!received.get(dest.getId()).contains(message.toString()))
             flp2p.broadcast(dest, message);
     }
+
 
     @Override   
     public void deliver(Host src, Message message) {
@@ -43,8 +46,9 @@ public class PerfectLink implements MessageListener {
             received.get(src.getId()).add(hash);
     }
 
+    
     @Override
-    public void closeSocket() {
-        flp2p.closeSocket();
+    public void closeConnection() {
+        flp2p.closeConnection();
     }
 }

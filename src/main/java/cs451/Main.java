@@ -1,17 +1,18 @@
 package cs451;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import cs451.format.Parser;
 
+/**
+ * Main
+ */
 public class Main {
-    public static final AtomicBoolean running = new AtomicBoolean(true);
     private static App app;
 
+
     private static void handleSignal() {
-        running.set(false);
-        app.closeSocket();
+        app.closeConnection();
     }
+
 
     private static void initSignalHandlers() {
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -21,6 +22,7 @@ public class Main {
             }
         });
     }
+
 
     public static void main(String[] args) throws InterruptedException {
         Parser parser = new Parser(args);

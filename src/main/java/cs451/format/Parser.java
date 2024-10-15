@@ -6,16 +6,17 @@ import cs451.Constants;
 import cs451.Host;
 
 public class Parser {
-
     private String[] args;
     private IdParser idParser;
     private HostsParser hostsParser;
     private OutputParser outputParser;
     private ConfigParser configParser;
 
+
     public Parser(String[] args) {
         this.args = args;
     }
+
 
     public void parse() {
         idParser = new IdParser();
@@ -49,30 +50,37 @@ public class Parser {
         }
     }
 
+
     private void help() {
         System.err.println("Usage: ./run.sh --id ID --hosts HOSTS --output OUTPUT CONFIG");
         System.exit(1);
     }
 
+
     public int myId() {
         return idParser.getId();
     }
+
 
     public List<Host> hosts() {
         return hostsParser.getHosts();
     }
 
+
     public String output() {
         return outputParser.getPath();
     }
+
 
     public String config() {
         return configParser.getPath();
     }
 
+
     public int nbMes() {
         return configParser.getNbMes();
     }
+    
     
     public int receiverId() {
         return configParser.getReceiverId();

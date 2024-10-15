@@ -11,11 +11,10 @@ import java.util.List;
 import cs451.Host;
 
 public class HostsParser {
-
     private static final String HOSTS_KEY = "--hosts";
     private static final String SPACES_REGEX = "\\s+";
-
     private List<Host> hosts = new ArrayList<>();
+
 
     public boolean populate(String key, String filename) {
         if (!key.equals(HOSTS_KEY)) {
@@ -58,6 +57,7 @@ public class HostsParser {
         return true;
     }
 
+
     private boolean checkIdRange() {
         int num = hosts.size();
         for (Host host : hosts) {
@@ -70,14 +70,17 @@ public class HostsParser {
         return true;
     }
 
+
     public boolean inRange(int id) {
         return id <= hosts.size();
     }
+
 
     public List<Host> getHosts() {
         return hosts;
     }
 
+    
     class HostsComparator implements Comparator<Host> {
 
         public int compare(Host a, Host b) {

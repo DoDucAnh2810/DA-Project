@@ -2,14 +2,14 @@ package cs451;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.io.IOException;
 
 import cs451.p2pLink.GroupedLink;
-
-import java.io.IOException;
 
 public class App implements MessageListener {
     private GroupedLink gp2p;
     private PrintWriter writer;
+
 
     App(int myId, String output) {
         gp2p = new GroupedLink(this, myId);
@@ -22,6 +22,7 @@ public class App implements MessageListener {
         }
     }
 
+
     @Override
     public void broadcast(Host dest, Message message) {
         gp2p.broadcast(dest, message);
@@ -29,14 +30,16 @@ public class App implements MessageListener {
         writer.flush();
     }
 
+
     @Override
     public void deliver(Host src, Message message) {
         writer.println("d " + message.processId() + " " + message.sequenceNum());
         writer.flush();
     }
 
+
     @Override
-    public void closeSocket() {
-        gp2p.closeSocket();
+    public void closeConnection() {
+        gp2p.closeConnection();
     }
 }

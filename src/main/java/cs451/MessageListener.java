@@ -6,5 +6,5 @@ package cs451;
 public interface MessageListener {
     void broadcast(Host dest, Message message);
     void deliver(Host src, Message message);
-    void closeSocket();
+    void closeConnection();
 }

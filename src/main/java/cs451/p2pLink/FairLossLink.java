@@ -5,15 +5,17 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import cs451.Host;
-import cs451.Main;
 import cs451.Message;
 import cs451.MessageListener;
 
 public class FairLossLink implements MessageListener {
+    private static final AtomicBoolean running = new AtomicBoolean(true);
     private MessageListener app;
     private DatagramSocket socket;
+
 
     public FairLossLink(MessageListener app, int myId){
         this.app = app;
@@ -28,6 +30,7 @@ public class FairLossLink implements MessageListener {
         UDPreceiver.start();
     }
 
+
     private void UDPsend(Message message, String ip, int port) {
         byte[] buffer = message.getBytes();
         try {
@@ -41,12 +44,13 @@ public class FairLossLink implements MessageListener {
         }
     }
 
+
     private void UDPreceive() {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
         try {
-            while (Main.running.get()) {
+            while (running.get()) {
                 try {socket.receive(packet);}
                 catch (SocketException e) {System.exit(1);}
 
@@ -65,18 +69,22 @@ public class FairLossLink implements MessageListener {
         }
     }
 
+
     @Override
     public void broadcast(Host dest, Message message) {
         UDPsend(message, dest.getIp(), dest.getPort());
     }
+
 
     @Override
     public void deliver(Host src, Message message) {
         app.deliver(src, message);
     }
 
+
     @Override
-    public void closeSocket() {
+    public void closeConnection() {
+        running.set(false);
         socket.close();
     }
 }

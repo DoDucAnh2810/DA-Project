@@ -10,11 +10,11 @@ public class Host {
     private static final String IP_START_REGEX = "/";
     private static HashMap<String, Host> hashToHost = new HashMap<String, Host>();
     private static HashMap<Integer, Host> idToHost = new HashMap<Integer, Host>();
-
     private int id;
     private String ip;
     private int port = -1;
     private String hash;
+
 
     public boolean populate(String idString, String ipString, String portString) {
         try {
@@ -48,21 +48,26 @@ public class Host {
         return true;
     }
 
+
     public int getId() {
         return id;
     }
+
 
     public String getIp() {
         return ip;
     }
 
+
     public int getPort() {
         return port;
     }
 
+
     public String getHash() {
         return hash;
     }
+
 
     public static void initLookup(List<Host> hosts) {
         for (Host host : hosts) {
@@ -71,13 +76,16 @@ public class Host {
         }
     }
 
+
     public static Host hashLookup(String hash) {
         return hashToHost.get(hash);
     }
 
+
     public static Host idLookup(int id) {
         return idToHost.get(id);
     }
+
 
     public static Set<Integer> idSet() {
         return idToHost.keySet();

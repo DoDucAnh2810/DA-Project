@@ -3,10 +3,9 @@ package cs451.format;
 import java.io.File;
 
 public class OutputParser {
-
     private static final String OUTPUT_KEY = "--output";
-
     private String path;
+
 
     public boolean populate(String key, String value) {
         if (!key.equals(OUTPUT_KEY)) {
@@ -18,6 +17,7 @@ public class OutputParser {
         return true;
     }
 
+    
     public String getPath() {
         return path;
     }

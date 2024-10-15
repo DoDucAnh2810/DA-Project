@@ -1,12 +1,13 @@
 package cs451;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Message
+ */
 public class Message {
     private int processId, sequenceNum, length;
     private byte[] content;
     
+
     public Message(int processId, int sequenceNum, byte[] content) {
         this.processId = processId;
         this.sequenceNum = sequenceNum;
@@ -16,6 +17,7 @@ public class Message {
             this.length = content.length;
         this.content = content;
     }
+
 
     public Message(byte[] serialization) {
         processId = 0;
@@ -34,22 +36,32 @@ public class Message {
             content[i++] = serialization[j++];
     }
 
+
     public int processId() {
         return processId;
     }
 
-    public long sequenceNum() {
+
+    public int sequenceNum() {
         return sequenceNum;
     }
+
+
+    public int length() {
+        return length;
+    }
+
 
     public byte[] content() {
         return content;
     }
 
+
     @Override
     public String toString() {
         return processId + ":" + sequenceNum; 
     }
+
 
     public byte[] getBytes() {
         int processIdCopy = processId;
@@ -74,62 +86,5 @@ public class Message {
             buffer[i++] = content[j++];
 
         return buffer;
-    }
-
-    public static byte[] groupSerialization(List<Message> messages) {
-        int totalLength = 0;
-        for (Message message : messages)
-            totalLength += 12+message.length;
-        byte[] buffer = new byte[totalLength];
-
-        int start = 0;
-        for (Message message : messages) {
-            int processId = message.processId;
-            int sequenceNum = message.sequenceNum;
-            int length = message.length;
-            int i = 0, j = 0;
-            while (i < 4) {
-                buffer[start+(i++)] = (byte) (processId & 0xFF);
-                processId >>= 8;
-            }
-            while (i < 8) {
-                buffer[start+(i++)] = (byte) (sequenceNum & 0xFF);
-                sequenceNum >>= 8;
-            }
-            while (i < 12) {
-                buffer[start+(i++)] = (byte) (length & 0xFF);
-                length >>= 8;
-            }
-            while (i < 12 + message.length)
-                buffer[start+(i++)] = message.content[j++];
-            start += 12+message.length;
-        }
-
-        return buffer;
-    }
-
-    public static List<Message> groupDeserialization(byte[] serialization) {
-        List<Message> messages = new ArrayList<>();
-        int start = 0;
-        while (start < serialization.length) {
-            int processId = 0, sequenceNum = 0, length = 0;
-
-            for (int i = start+3; i >= start; i--)
-                processId = (processId << 8) | (serialization[i] & 0xFF);
-            for (int i = start+7; i >= start+4; i--)
-                sequenceNum = (sequenceNum << 8) | (serialization[i] & 0xFF);
-            for (int i = start+11; i >= start+8; i--)
-                length = (length << 8) | (serialization[i] & 0xFF);
-
-            byte[] content = new byte[length];
-            int i = 0, j = start+12;
-            while (i < length)
-                content[i++] = serialization[j++];
-
-            start += 12+length;
-            messages.add(new Message(processId, sequenceNum, content));
-        }
-
-        return messages;
     }
 }

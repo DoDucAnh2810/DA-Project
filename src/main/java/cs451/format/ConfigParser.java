@@ -5,10 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ConfigParser {
-
     private String path;
     private int nbMes;
     private int receiverId;
+
 
     public boolean populate(String value) {
         File file = new File(value);
@@ -34,13 +34,16 @@ public class ConfigParser {
         return true;
     }
 
+
     public String getPath() {
         return path;
     }
 
+
     public int getNbMes() {
         return nbMes;
     }
+    
     
     public int getReceiverId() {
         return receiverId;

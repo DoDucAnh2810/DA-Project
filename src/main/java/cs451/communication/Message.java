@@ -6,6 +6,7 @@ package cs451.communication;
 public class Message {
     private int processId, sequenceNum, length;
     private byte[] content;
+    private String string;
     
 
     public Message(int processId, int sequenceNum, byte[] content) {
@@ -16,6 +17,7 @@ public class Message {
         else
             this.length = content.length;
         this.content = content;
+        this.string = processId + ":" + sequenceNum; 
     }
 
 
@@ -59,7 +61,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return processId + ":" + sequenceNum; 
+        return string;
     }
 
 

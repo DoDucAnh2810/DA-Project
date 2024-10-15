@@ -1,6 +1,8 @@
 package cs451.broadcast;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import cs451.Host;
 import cs451.communication.Deliverable;
@@ -15,26 +17,29 @@ public class UniformBroadcast extends MessageBroadcaster {
     private GroupedLink gp2p;
     private Deliverable app;
     private int myId;
-    private HashMap<String, Integer> ack;
+    private HashMap<String, Set<Integer>> ack;
+    private HashSet<String> delivered;
 
 
     public UniformBroadcast(Deliverable app, int myId) {
         this.gp2p = new GroupedLink(this, myId);
         this.app = app;
         this.myId = myId;
-        this.ack = new HashMap<String, Integer>();
+        this.ack = new HashMap<String, Set<Integer>>();
     }
 
 
     private void acknowledge(Host src, Message message) {
         String hash = message.toString();
-        Integer value = ack.get(hash); 
-        if (value == null)
-            value = 0;
-        ack.put(hash, ++value);
-        if (value > Host.count()/2) {
-            ack.remove(hash);
+        if (ack.get(hash) == null) {
+            ack.put(hash, new HashSet<Integer>());
+            ack.get(hash).add(myId);
+        }
+        ack.get(hash).add(src.getId());
+        if (ack.get(hash).size() > Host.count()/2) {
             app.deliver(src, message);
+            delivered.add(hash);
+            ack.remove(hash);
         }
     }
 
@@ -50,6 +55,8 @@ public class UniformBroadcast extends MessageBroadcaster {
 
     @Override
     public void deliver(Host src, Message message) {
+        if (delivered.contains(message.toString()))
+            return;
         for (Host host : Host.hostList())
             if (host.getId() != myId && 
                 host.getId() != src.getId())

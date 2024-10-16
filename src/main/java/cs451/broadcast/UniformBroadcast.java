@@ -18,7 +18,6 @@ public class UniformBroadcast extends MessageBroadcaster {
     private Deliverable app;
     private int myId;
     private HashMap<String, Set<Integer>> ack;
-    private HashSet<String> delivered;
 
 
     public UniformBroadcast(Deliverable app, int myId) {
@@ -38,29 +37,29 @@ public class UniformBroadcast extends MessageBroadcaster {
         ack.get(hash).add(src.getId());
         if (ack.get(hash).size() > Host.count()/2) {
             app.deliver(src, message);
-            delivered.add(hash);
             ack.remove(hash);
         }
+    }
+
+
+    private void bebOther(Message message) {
+        for (Host host : Host.hostList())
+            if (host.getId() != myId)
+                gp2p.send(host, message);
     }
 
     
     @Override
     public void broadcast(Message message) {
-        for (Host host : Host.hostList())
-            if (host.getId() != myId)
-                gp2p.send(host, message);
         acknowledge(Host.idLookup(myId), message);
+        bebOther(message);
     }
 
 
     @Override
     public void deliver(Host src, Message message) {
-        if (delivered.contains(message.hash()))
-            return;
-        for (Host host : Host.hostList())
-            if (host.getId() != myId && 
-                host.getId() != src.getId())
-                gp2p.send(host, message);
+        if (ack.get(message.hash()) == null)
+            bebOther(message);
         acknowledge(src, message);
     }
 

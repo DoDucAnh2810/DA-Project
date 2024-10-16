@@ -50,7 +50,7 @@ public class GroupedLink extends MessageListener {
         pp2p.send(Host.idLookup(destId), 
                   new Message(myId, 
                               groupNum++, 
-                              groupSerialization(waiting.get(destId)),
+                              Message.groupSerialization(waiting.get(destId)),
                               Message.GroupedMes));
         waiting.get(destId).clear();
         lastModTime.get(destId).reset();
@@ -68,7 +68,7 @@ public class GroupedLink extends MessageListener {
 
     @Override
     public void deliver(Host src, Message message) {
-        for (Message m : groupDeserialization(message.content()))
+        for (Message m : Message.groupDeserialization(message.content()))
             app.deliver(src, m);
     }
 
@@ -77,65 +77,5 @@ public class GroupedLink extends MessageListener {
     public void closeConnection() {
         executor.shutdownNow();
         pp2p.closeConnection();
-    }
-
-
-    public static byte[] groupSerialization(List<Message> messages) {
-        int totalLength = 0;
-        for (Message message : messages)
-            totalLength += 13+message.length();
-        byte[] buffer = new byte[totalLength];
-
-        int start = 0;
-        for (Message message : messages) {
-            int processId = message.processId();
-            int sequenceNum = message.sequenceNum();
-            int length = message.length();
-            int i = 0, j = 0;
-            while (i < 4) {
-                buffer[start+(i++)] = (byte) (processId & 0xFF);
-                processId >>= 8;
-            }
-            while (i < 8) {
-                buffer[start+(i++)] = (byte) (sequenceNum & 0xFF);
-                sequenceNum >>= 8;
-            }
-            while (i < 12) {
-                buffer[start+(i++)] = (byte) (length & 0xFF);
-                length >>= 8;
-            }
-            buffer[start+(i++)] = message.type();
-            while (i < 13 + message.length())
-                buffer[start+(i++)] = message.content()[j++];
-            start += 13+message.length();
-        }
-
-        return buffer;
-    }
-
-    
-    public static List<Message> groupDeserialization(byte[] serialization) {
-        List<Message> messages = new ArrayList<>();
-        int start = 0;
-        while (start < serialization.length) {
-            int processId = 0, sequenceNum = 0, length = 0;
-
-            for (int i = start+3; i >= start; i--)
-                processId = (processId << 8) | (serialization[i] & 0xFF);
-            for (int i = start+7; i >= start+4; i--)
-                sequenceNum = (sequenceNum << 8) | (serialization[i] & 0xFF);
-            for (int i = start+11; i >= start+8; i--)
-                length = (length << 8) | (serialization[i] & 0xFF);
-            byte type = serialization[start+12];
-            byte[] content = new byte[length];
-            int i = 0, j = start+13;
-            while (i < length)
-                content[i++] = serialization[j++];
-
-            start += 13+length;
-            messages.add(new Message(processId, sequenceNum, content, type));
-        }
-
-        return messages;
     }
 }

@@ -10,8 +10,8 @@ public class Message {
     public static final byte PerfectAck = 0b00010000;
     public static final byte GroupedMes = 0b00000001;
     public static final byte FIFOPstMes = 0b00000010;
-    private static final byte AckMask = 0x70;
-    private static final byte HSfMask = 0x0F;
+    private static final byte AcksMask = 0x70;
+    private static final byte HashMask = 0x0F;
 
     private int processId, sequenceNum, length;
     private byte[] content;
@@ -46,7 +46,7 @@ public class Message {
 
     public Message(Message message, byte ack) {
         this(message.processId, message.sequenceNum, message.content, 
-             (byte)(message.type | (ack & AckMask)), message.srcId);
+             (byte)(message.type | (ack & AcksMask)), message.srcId);
     } 
 
 
@@ -63,7 +63,7 @@ public class Message {
 
 
     private String calculateHash() {
-        return processId + ":" + sequenceNum + ":" + (type & HSfMask);
+        return processId + ":" + sequenceNum + ":" + (type & HashMask);
     }
 
 

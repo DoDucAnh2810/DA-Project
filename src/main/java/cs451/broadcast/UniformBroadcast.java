@@ -1,8 +1,8 @@
 package cs451.broadcast;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import cs451.Host;
 import cs451.communication.Deliverable;
@@ -17,18 +17,18 @@ public class UniformBroadcast extends MessageBroadcaster {
     private GroupedLink gp2p;
     private Deliverable app;
     private int myId;
-    private HashMap<String, Set<Integer>> ack;
+    private ConcurrentHashMap<String, Set<Integer>> ack;
 
 
     public UniformBroadcast(Deliverable app, int myId) {
         this.gp2p = new GroupedLink(this, myId);
         this.app = app;
         this.myId = myId;
-        this.ack = new HashMap<String, Set<Integer>>();
+        this.ack = new ConcurrentHashMap<String, Set<Integer>>();
     }
 
 
-    private void acknowledge(Host src, Message message) {
+    private synchronized void acknowledge(Host src, Message message) {
         String hash = message.hash();
         if (ack.get(hash) == null) {
             ack.put(hash, new HashSet<Integer>());

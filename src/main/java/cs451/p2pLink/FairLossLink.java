@@ -61,7 +61,7 @@ public class FairLossLink extends MessageListener {
                 Host src = Host.hashLookup(srcHash);
 
                 Message message = new Message(packet.getData());
-                
+                message.setSrcId(src.getId());
                 deliver(src, message);
             }
         } catch (IOException e) {

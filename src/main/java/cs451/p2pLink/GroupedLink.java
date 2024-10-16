@@ -68,8 +68,10 @@ public class GroupedLink extends MessageListener {
 
     @Override
     public void deliver(Host src, Message message) {
-        for (Message m : Message.groupDeserialization(message.content()))
+        for (Message m : Message.groupDeserialization(message.content())) {
+            m.setSrcId(message.srcId());
             app.deliver(src, m);
+        }
     }
 
 

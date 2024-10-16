@@ -81,7 +81,7 @@ public class GroupedLink extends MessageListener {
     public static byte[] groupSerialization(List<Message> messages) {
         int totalLength = 0;
         for (Message message : messages)
-            totalLength += 12+message.length();
+            totalLength += 13+message.length();
         byte[] buffer = new byte[totalLength];
 
         int start = 0;
@@ -102,9 +102,10 @@ public class GroupedLink extends MessageListener {
                 buffer[start+(i++)] = (byte) (length & 0xFF);
                 length >>= 8;
             }
-            while (i < 12 + message.length())
+            buffer[start+(i++)] = message.type();
+            while (i < 13 + message.length())
                 buffer[start+(i++)] = message.content()[j++];
-            start += 12+message.length();
+            start += 13+message.length();
         }
 
         return buffer;
@@ -123,14 +124,14 @@ public class GroupedLink extends MessageListener {
                 sequenceNum = (sequenceNum << 8) | (serialization[i] & 0xFF);
             for (int i = start+11; i >= start+8; i--)
                 length = (length << 8) | (serialization[i] & 0xFF);
-
+            byte type = serialization[start+12];
             byte[] content = new byte[length];
-            int i = 0, j = start+12;
+            int i = 0, j = start+13;
             while (i < length)
                 content[i++] = serialization[j++];
 
-            start += 12+length;
-            messages.add(new Message(processId, sequenceNum, content));
+            start += 13+length;
+            messages.add(new Message(processId, sequenceNum, content, type));
         }
 
         return messages;

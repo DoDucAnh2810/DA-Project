@@ -37,12 +37,12 @@ public class PerfectLink extends MessageListener {
     @Override   
     public void deliver(Host src, Message message) {
         String hash = message.toString();
-        if (message.processId() != myId) {
+        if (!message.isPerfectAck()) {
             if (!delivered.contains(hash)) {
                 app.deliver(src, message);
                 delivered.add(hash);
             }
-            flp2p.send(src, message);
+            flp2p.send(src, new Message(message, Message.PerfectAck));
         } else
             received.get(src.getId()).add(hash);
     }

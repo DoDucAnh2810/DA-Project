@@ -4,12 +4,27 @@ package cs451.communication;
  * Message
  */
 public class Message {
+    public static final byte DefaultMes = 0b00000000;
+    public static final byte PerfectAck = 0b00000001;
+    public static final byte GroupedMes = 0b00000010;
+    public static final byte FIFOPastMs = 0b00000100;
     private int processId, sequenceNum, length;
+    private byte type;
     private byte[] content;
-    private String string;
+    private String hash;
     
 
     public Message(int processId, int sequenceNum, byte[] content) {
+        this(processId, sequenceNum, content, (byte)0);
+    }
+
+
+    public Message(Message message, byte type) {
+        this(message.processId, message.sequenceNum, message.content, type);
+    }
+
+
+    public Message(int processId, int sequenceNum, byte[] content, byte type) {
         this.processId = processId;
         this.sequenceNum = sequenceNum;
         if (content == null)
@@ -17,7 +32,8 @@ public class Message {
         else
             this.length = content.length;
         this.content = content;
-        this.string = processId + ":" + sequenceNum; 
+        this.type = type;
+        this.hash = calculateHash(); 
     }
 
 
@@ -31,11 +47,29 @@ public class Message {
             sequenceNum = (sequenceNum << 8) | (serialization[i] & 0xFF);
         for (int i = 11; i >= 8; i--)
             length = (length << 8) | (serialization[i] & 0xFF);
-
+        type = serialization[12];
         content = new byte[length];
-        int i = 0, j = 12;
+        int i = 0, j = 13;
         while (i < length)
             content[i++] = serialization[j++];
+        hash = calculateHash();
+    }
+
+
+    public String calculateHash() {
+        String suffix;
+        switch (type) {
+            case GroupedMes:
+                suffix="G";
+                break;
+            case FIFOPastMs:
+                suffix="F";
+                break;
+            default:
+                suffix = "";
+                break;
+        }
+        return processId + ":" + sequenceNum + ":" + suffix;
     }
 
 
@@ -59,9 +93,19 @@ public class Message {
     }
 
 
+    public byte type() {
+        return type;
+    }
+
+
+    public boolean isPerfectAck() {
+        return type == PerfectAck;
+    }
+    
+
     @Override
     public String toString() {
-        return string;
+        return hash;
     }
 
 
@@ -69,7 +113,7 @@ public class Message {
         int processIdCopy = processId;
         int sequenceNumCopy = sequenceNum;
         int lengthCopy = length;
-        byte[] buffer = new byte[12+length];
+        byte[] buffer = new byte[13+length];
 
         int i = 0, j = 0;
         while (i < 4) {
@@ -84,7 +128,8 @@ public class Message {
             buffer[i++] = (byte) (lengthCopy & 0xFF);
             lengthCopy >>= 8;
         }
-        while (i < 12 + length)
+        buffer[i++] = type;
+        while (i < 13 + length)
             buffer[i++] = content[j++];
 
         return buffer;

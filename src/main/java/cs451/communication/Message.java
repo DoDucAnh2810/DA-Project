@@ -13,24 +13,24 @@ public class Message {
     private static final byte AckMask = 0x70;
     private static final byte HSfMask = 0x0F;
 
-    private int srcId, processId, sequenceNum, length;
-    private byte type;
+    private int processId, sequenceNum, length;
     private byte[] content;
+    private byte type;
     private String hash;
+    private int srcId;
     
 
     public Message(int processId, int sequenceNum, byte[] content) {
-        this(processId, sequenceNum, content, (byte)0, 0);
+        this(processId, sequenceNum, content, (byte)0, processId);
     }
 
 
     public Message(int processId, int sequenceNum, byte[] content, byte type) {
-        this(processId, sequenceNum, content, type, 0);
+        this(processId, sequenceNum, content, type, processId);
     }
 
 
     public Message(int processId, int sequenceNum, byte[] content, byte type, int srcId) {
-        this.srcId = srcId;
         this.processId = processId;
         this.sequenceNum = sequenceNum;
         if (content == null)
@@ -39,7 +39,8 @@ public class Message {
             this.length = content.length;
         this.content = content;
         this.type = type;
-        this.hash = calculateHash(); 
+        this.hash = calculateHash();
+        this.srcId = srcId;
     }
 
 
@@ -51,23 +52,18 @@ public class Message {
 
     public Message(byte[] serialization) {
         Message message = deserialization(serialization, 0);
-        this.srcId = message.srcId;
         this.processId = message.processId;
         this.sequenceNum = message.sequenceNum;
         this.length = message.length;
         this.content = message.content;
         this.type = message.type;
         this.hash = message.hash;
+        this.srcId = message.srcId;
     }
 
 
     private String calculateHash() {
         return processId + ":" + sequenceNum + ":" + (type & HSfMask);
-    }
-
-
-    public int srcId() {
-        return srcId;
     }
 
 
@@ -100,6 +96,11 @@ public class Message {
         return hash;
     }
 
+
+    public int srcId() {
+        return srcId;
+    }
+    
 
     public void setSrcId(int srcId) {
         this.srcId = srcId;

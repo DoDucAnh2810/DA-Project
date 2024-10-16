@@ -25,7 +25,7 @@ public class GroupedLink extends MessageListener {
         this.pp2p = new PerfectLink(this, myId);
         this.app = app;
         this.myId = myId;
-        this.groupNum = -1;
+        this.groupNum = 1;
         this.waiting = new ConcurrentHashMap<>();
         for (int id : Host.idSet())
             this.waiting.put(id, new ArrayList<>());
@@ -67,10 +67,10 @@ public class GroupedLink extends MessageListener {
 
 
     @Override
-    public void deliver(Host src, Message message) {
-        for (Message m : Message.groupDeserialization(message.content())) {
-            m.setSrcId(message.srcId());
-            app.deliver(src, m);
+    public void deliver(Host src, Message group) {
+        for (Message message : Message.groupDeserialization(group.content())) {
+            message.setSrcId(src.getId());
+            app.deliver(src, message);
         }
     }
 

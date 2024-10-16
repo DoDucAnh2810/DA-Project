@@ -48,8 +48,10 @@ public class GroupedLink extends MessageListener {
         if (waiting.get(destId).isEmpty())
             return;
         pp2p.send(Host.idLookup(destId), 
-                  new Message(myId, groupNum--, 
-                              groupSerialization(waiting.get(destId))));
+                  new Message(myId, 
+                              groupNum++, 
+                              groupSerialization(waiting.get(destId)),
+                              Message.GroupedMes));
         waiting.get(destId).clear();
         lastModTime.get(destId).reset();
     }

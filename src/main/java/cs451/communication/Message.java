@@ -4,10 +4,11 @@ package cs451.communication;
  * Message
  */
 public class Message {
-    public static final byte DefaultMes = 0b00000000;
-    public static final byte PerfectAck = 0b00000001;
-    public static final byte GroupedMes = 0b00000010;
-    public static final byte FIFOPastMs = 0b00000100;
+    public static final byte PerfectAck = 0b00010000;
+    public static final byte GroupedMes = 0b00000001;
+    public static final byte FIFOPstMes = 0b00000010;
+    private static final byte AckMask = 0x70;
+    private static final byte HSfMask = 0x0F;
     private int processId, sequenceNum, length;
     private byte type;
     private byte[] content;
@@ -19,9 +20,10 @@ public class Message {
     }
 
 
-    public Message(Message message, byte type) {
-        this(message.processId, message.sequenceNum, message.content, type);
-    }
+    public Message(Message message, byte ack) {
+        this(message.processId, message.sequenceNum, message.content, 
+             (byte)(message.type | (ack & AckMask)));
+    } 
 
 
     public Message(int processId, int sequenceNum, byte[] content, byte type) {
@@ -56,20 +58,8 @@ public class Message {
     }
 
 
-    public String calculateHash() {
-        String suffix;
-        switch (type) {
-            case GroupedMes:
-                suffix="G";
-                break;
-            case FIFOPastMs:
-                suffix="F";
-                break;
-            default:
-                suffix = "";
-                break;
-        }
-        return processId + ":" + sequenceNum + ":" + suffix;
+    private String calculateHash() {
+        return processId + ":" + sequenceNum + ":" + (type & HSfMask);
     }
 
 
@@ -98,16 +88,15 @@ public class Message {
     }
 
 
-    public boolean isPerfectAck() {
-        return type == PerfectAck;
-    }
-    
-
-    @Override
-    public String toString() {
+    public String hash() {
         return hash;
     }
 
+
+    public boolean isPerfectAck() {
+        return (type & PerfectAck) != 0;
+    }
+    
 
     public byte[] getBytes() {
         int processIdCopy = processId;

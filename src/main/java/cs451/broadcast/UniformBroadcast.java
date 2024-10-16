@@ -30,7 +30,7 @@ public class UniformBroadcast extends MessageBroadcaster {
 
 
     private void acknowledge(Host src, Message message) {
-        String hash = message.toString();
+        String hash = message.hash();
         if (ack.get(hash) == null) {
             ack.put(hash, new HashSet<Integer>());
             ack.get(hash).add(myId);
@@ -55,7 +55,7 @@ public class UniformBroadcast extends MessageBroadcaster {
 
     @Override
     public void deliver(Host src, Message message) {
-        if (delivered.contains(message.toString()))
+        if (delivered.contains(message.hash()))
             return;
         for (Host host : Host.hostList())
             if (host.getId() != myId && 
